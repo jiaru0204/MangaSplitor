@@ -1,4 +1,4 @@
-name: Build MangaSplittor
+name: Build MangaSplitter
 
 on:
   push:
@@ -22,11 +22,11 @@ jobs:
       - name: Build with qmake
         run: |
           cd bin
-          qmake MangaSplittor2.pro
+          qmake MangaSplitor2.pro
           mingw32-make -j4
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: MangaSplittor-Windows
+          name: MangaSplitter-Windows
           path: bin/release/*.exe
