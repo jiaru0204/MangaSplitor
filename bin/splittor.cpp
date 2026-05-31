@@ -16,17 +16,18 @@ void Splittor::splitDoublePageSpread(QFile *file, ReadingOrder readingOrder)
     QImage leftPartImage = imageDoublePageSpread.copy(0, 0, halfWidth, height);
     QImage rightPartImage = imageDoublePageSpread.copy(halfWidth, 0, width - halfWidth, height);
 
+    const QString baseName = fileInfo.baseName();
     QString baseNameLeft;
     QString baseNameRight;
     if(readingOrder == ReadingOrder::RightToLeft)
     {
-        baseNameLeft = fileInfo.baseName();
-        baseNameRight = QString::number(fileInfo.baseName().toInt() - 1);
+        baseNameLeft = baseName + "-2";
+        baseNameRight = baseName + "-1";
     }
     if(readingOrder == ReadingOrder::LeftToRight)
     {
-        baseNameLeft = QString::number(fileInfo.baseName().toInt() - 1);
-        baseNameRight = fileInfo.baseName();
+        baseNameLeft = baseName + "-1";
+        baseNameRight = baseName + "-2";
     }
     qDebug() << baseNameLeft;
     qDebug() << baseNameRight;
