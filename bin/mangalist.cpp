@@ -172,26 +172,9 @@ void MangaList::mangaRename(Method method, BlankPageOrNot blankPage)
 {
     if(method == Method::Split)
     {
-        int index = 0;
-
-        if(blankPage == BlankPageOrNot::WithBlankPage)
-        {
-            //  do sth to add a blank page, but not for now.
-        }
-
-        for(int i = 0; i < mangaFiles->mangaFile.size(); i++)
-        {
-            if(mangaFiles->mangaFile[i].attribute == Attribute::SinglePage)
-                index++;
-            if(mangaFiles->mangaFile[i].attribute == Attribute::DoublePageSpread)
-                index += 2;
-            qDebug() << index;
-            mangaFiles->mangaFile[i].id = index;
-        }
-        for(int i = mangaFiles->mangaFile.size() - 1; i >= 0; i--)
-        {
-            fileRename(mangaFiles->mangaFile[i].pageFile, QString::number(mangaFiles->mangaFile[i].id));
-        }
+        Q_UNUSED(blankPage);
+        //  切割模式保留原文件名，双页图由 splitDoublePageSpread 输出为 原名-1 / 原名-2
+        return;
     }
     if(method == Method::Merge)
     {
@@ -214,4 +197,3 @@ void MangaList::mangaSplit(Method method, ReadingOrder readingOrder)
         return;
     }
 }
-
