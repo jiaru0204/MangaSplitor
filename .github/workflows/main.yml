@@ -7,17 +7,17 @@ on:
 
 jobs:
   build-windows:
-    runs-on: windows-latest
+    runs-on: windows-2019   # 使用更稳定的环境
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Qt (MSVC)
+      - name: Install Qt 6.5.3 (MSVC)
         uses: jurplel/install-qt-action@v3
         with:
-          version: '6.8.0'
+          version: '6.5.3'
           host: 'windows'
           target: 'desktop'
-          arch: 'win64_msvc2019_64'   # 使用 MSVC 编译器
+          arch: 'win64_msvc2019_64'
 
       - name: Add MSVC to PATH
         uses: ilammy/msvc-dev-cmd@v1
@@ -26,7 +26,7 @@ jobs:
         run: |
           cd bin
           qmake MangaSplitor2.pro
-          nmake           # 使用 nmake 而非 mingw32-make
+          nmake
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
