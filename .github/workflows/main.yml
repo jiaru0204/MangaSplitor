@@ -1,9 +1,9 @@
-name: Build Qt Project
+name: Build MangaSplitter
 
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:  # 支持手动触发
+  workflow_dispatch:
 
 jobs:
   build-windows:
@@ -14,24 +14,18 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
-          version: '6.5.0'  # 可改成 5.15.2
+          version: '6.8.0'        # 匹配你用的 6.8.6
           host: 'windows'
           target: 'desktop'
-          arch: 'win64_msvc2019_64'
+          arch: 'win64_mingw'
       
-      - name: Configure CMake
+      - name: Build with qmake
         run: |
-          mkdir build
-          cd build
-          cmake .. -DCMAKE_PREFIX_PATH=$env:Qt6_DIR
-      
-      - name: Build
-        run: |
-          cd build
-          cmake --build . --config Release
+          qmake MangaSplitter2.pro
+          mingw32-make -j4
       
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: windows-build
-          path: build/Release/*.exe
+          name: MangaSplitter-Windows
+          path: release/*.exe
