@@ -11,17 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # 安装 MSYS2 (包含 MinGW)
-      - name: Setup MSYS2
-        uses: msys2/setup-msys2@v2
-        with:
-          msystem: MINGW64
-          update: true
-          install: >
-            mingw-w64-x86_64-gcc
-            mingw-w64-x86_64-make
-
-      # 安装 Qt
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
@@ -30,20 +19,13 @@ jobs:
           target: 'desktop'
           arch: 'win64_mingw'
 
-      # 编译
       - name: Build with qmake
-        shell: msys2 {0}
         run: |
           cd bin
-          # 添加 Qt 路径
-          export PATH="/c/Users/runneradmin/Qt/6.8.0/mingw_64/bin:$PATH"
-          # 使用 MSYS2 的 g++
-          export PATH="/c/msys64/mingw64/bin:$PATH"
-          which qmake
-          which g++
           qmake MangaSplitor2.pro
-          mingw32-make -j4
-
+          # 关键修复：添加 -lmingw32 解决链接问题
+          mingw32-make -j4 CXXFLAGS="-D__MINGW32__" LFLAGS="-lmingw32"
+      
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
