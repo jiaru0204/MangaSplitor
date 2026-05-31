@@ -10,22 +10,23 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
-          version: '6.8.0'        # 匹配你用的 6.8.6
+          version: '6.8.0'
           host: 'windows'
           target: 'desktop'
           arch: 'win64_mingw'
-      
+
       - name: Build with qmake
         run: |
+          cd bin
           qmake MangaSplitter2.pro
           mingw32-make -j4
-      
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: MangaSplitter-Windows
-          path: release/*.exe
+          path: bin/release/*.exe
